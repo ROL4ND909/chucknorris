@@ -1,2 +1,2 @@
-# chucknorris
-We all love the jokes
+# Chuck Norris random Jokes
+We all love jokes
