@@ -7,8 +7,6 @@ import Joke from './components/Joke/';
 import Loader from './components/Loader';
 import './App.scss';
 
-const API_URL = `//api.icndb.com/jokes/random/`;
-
 function App() {
   const [jokes, setjokes] = useState([]);
   const [likedJokes, setLikedJokes] = useLocalStorageState('Jokes', []);
@@ -25,7 +23,7 @@ function App() {
   const fetchJokes = () => {
     setLoading(true);
 
-    fetch(API_URL + '10')
+    fetch('//api.icndb.com/jokes/random/10')
       .then((res) => res.json())
       .then((res) => {
         setjokes(res.value);
