@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import useLocalStorageState from "use-local-storage-state";
 
 import { Badge, AppBar, Tab, Tabs } from '@material-ui/core';
@@ -12,9 +12,10 @@ const API_URL = `//api.icndb.com/jokes/random/`;
 function App() {
   const [jokes, setjokes] = useState([]);
   const [likedJokes, setLikedJokes] = useLocalStorageState('Jokes', []);
-
+  const [isTimerOn, setTimerOn] = useState(false);
+  const [shouldFetchMore, setShouldFetchMore] = useState(likedJokes.length < 10);
+  const [maxJokes, setmaxJokes] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [currentTab, setCurrentTab] = useState(0);
 
   const changeTab = (ev, value) => {
@@ -38,18 +39,48 @@ function App() {
       .catch((err) => console.warn(`We have an error here: err ${err}`));
   };
 
-  const likeJoke = (id) => {
-    if (likedJokes.find((j) => j.id === id) || likedJokes.length > 9) {
-      // #TODO
-      // Add a message or something if joke is on the list or the max jokes are reached
-      console.log('is liked or max like items');
-      return;
-    }
+  const addJoke = (id) => {
+    if (likedJokes.find((j) => j.id === id)) return;
 
     const likedJoke = jokes.find((j) => j.id === id);
 
     setLikedJokes([likedJoke, ...likedJokes]);
+  }
+
+  const likeJoke = (id) => {
+    addJoke(id);
+
+    setmaxJokes(likedJokes.length > 9);
   };
+
+  useEffect(() => {
+    // Runs everytime isTimerOn OR shouldFetchMore changes
+    // and also after the first render
+    let timeout;
+    if (isTimerOn && shouldFetchMore) {
+      fetch(API_URL)
+        .then(res => res.json())
+        .then((res) => {
+          console.log(res.value.id);
+          likeJoke(res.value.id);
+          setShouldFetchMore(false);
+
+          timeout = setTimeout(() => {
+            setShouldFetchMore(true)
+          }, 5000)
+        })
+    }
+
+    return () => {
+      // Runs when the component is unmounted
+      // avoid running the timeout callback on unmounted component
+      clearTimeout(timeout);
+    }
+  }, [isTimerOn, shouldFetchMore]);
+
+  const toggleTimer = (ev) => {
+    setTimerOn(ev.target.checked);
+  }
 
   // Remove joke from liked list
   const unlikeJoke = (id) => {
@@ -72,6 +103,8 @@ function App() {
       </AppBar>
 
       <main className="wrapper">
+        {maxJokes && <h1>List is full</h1>}
+
         <div className="tabpanel" role="tabpanel" id="home-panel" hidden={currentTab !== 0}>
           <button className="btn" onClick={fetchJokes}>Give me some jokes</button>
 
@@ -82,6 +115,11 @@ function App() {
           </ol>
         </div>
         <div className="tabpanel" role="tabpanel" id="likes-panel" hidden={currentTab !== 1}>
+          <label htmlFor="toggleTimer">
+            <input type="checkbox" id="toggleTimer" onClick={toggleTimer} value={!isTimerOn} />
+            Add random joke every 5 sec.
+          </label>
+
           <ol className="joke-list" data-variant="liked">
             {likedJokes.map(joke => (
               <Joke  key={joke.id} joke={joke} unlikeJoke={unlikeJoke} />
