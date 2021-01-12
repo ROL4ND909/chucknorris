@@ -25,15 +25,16 @@ function App() {
   const fetchJokes = () => {
     setLoading(true);
 
-    fetch(API_URL + '10')
-      .then((res) => res.json())
-      .then((res) => {
-        setjokes(res.value);
-        setTimeout(() => {
+    // putt it in a timeout to always show the loader
+    setTimeout(() => {
+      fetch(API_URL + '10')
+        .then((res) => res.json())
+        .then((res) => {
+          setjokes(res.value);
           setLoading(false);
-        }, 400);
-      })
-      .catch((err) => console.warn(`We have an error here: err ${err}`));
+        })
+        .catch((err) => console.warn(`We have an error here: err ${err}`));
+    }, 500);
   };
 
   const likeJoke = (id) => {

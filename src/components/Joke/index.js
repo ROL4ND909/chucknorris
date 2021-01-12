@@ -7,8 +7,7 @@ export default function joke({ joke, likeJoke, unlikeJoke }) {
 
   return (
     <li className="joke">
-      <p dangerouslySetInnerHTML={{__html: `${joke.joke}`}} />
-
+      <p>{joke.joke}</p>
 
       {likeJoke ? (
         <button className="btn  btn--like" onClick={() => likeJoke(joke.id)}>
