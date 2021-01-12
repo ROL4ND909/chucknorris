@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useLocalStorageState from "use-local-storage-state";
 
+// I choose for Material UI for the ease of use for the tabpanels
 import { Badge, AppBar, Tab, Tabs } from '@material-ui/core';
 
 import Joke from './components/Joke/';
@@ -39,6 +40,9 @@ function App() {
       .catch((err) => console.warn(`We have an error here: err ${err}`));
   };
 
+  // Adding jokes to "liked" list
+  // #TODO - Check if there are saved jokes in the fetched list
+  // so I can always give them a "liked" flag
   const addJoke = (joke) => {
     if (likedJokes.find((j) => j.id === joke.id) || likedJokes.length > 9) return;
     const newLikedJokes = [joke, ...likedJokes];
@@ -62,6 +66,7 @@ function App() {
     }
   }, [isTimerOn, shouldFetchMore]);
 
+  // Toggle the timer state
   const toggleTimer = (ev) => {
     setTimerOn(ev.target.checked);
   }
