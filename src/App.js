@@ -59,7 +59,7 @@ function App() {
 
   return (
     <>
-      <AppBar position='sticky' style={{backgroundColor: `var(--color-geraldine)`}}>
+      <AppBar position='sticky' style={{backgroundColor: `var(--color-sunglo)`}}>
         <Tabs value={currentTab} onChange={changeTab} centered>
           <Tab label="Home" id="home-tab" aria-controls="home-panel" />
           <Tab label={
