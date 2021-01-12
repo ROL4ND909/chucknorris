@@ -1,0 +1,14 @@
+.joke-list {
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+
+  display: grid;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-bottom: 2rem;
+
+  &[data-variant='liked'] {
+    align-items: flex-start;
+    counter-reset: item;
+  }
+}

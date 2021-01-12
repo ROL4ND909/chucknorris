@@ -1,0 +1,242 @@
+// Modern CSS reset: https://github.com/hankchizljaw/modern-css-reset
+
+// Box sizing rules
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+// Remove default padding
+/* stylelint-disable-next-line selector-no-qualifying-type */
+ul[class], ol[class] {
+  padding: 0;
+}
+
+// Remove default margin
+/* stylelint-disable-next-line selector-no-qualifying-type */
+body, h1, h2, h3, h4, p, ul[class], ol[class], figure, blockquote, dl, dd {
+  margin: 0;
+}
+
+// Set core root defaults
+html {
+  scroll-behavior: smooth;
+}
+
+// Set core body defaults
+body {
+  text-rendering: optimizeSpeed;
+
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+// Remove list styles on ul, ol elements with a class attribute
+/* stylelint-disable-next-line selector-no-qualifying-type */
+ul[class], ol[class] {
+  list-style: none;
+}
+
+// A elements that don't have a class get default styles
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+// Make images easier to work with
+img, picture {
+  display: block;
+  max-width: 100%;
+}
+
+// Natural flow and rhythm in articles by default
+article > * + * {
+  margin-top: 1em;
+}
+
+// Inherit fonts for inputs and buttons
+input, button, textarea, select {
+  font: inherit;
+}
+
+// Blur images when they have no alt attribute
+img:not([alt]) {
+  filter: blur(10px);
+}
+
+// Remove all animations and transitions for people that prefer not to see them
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+
+:root {
+  --color-gallery: #efefef;
+  --color-geraldine: #fa857e;
+  --color-hippie-blue: #6aa5b3;
+  --color-mine-shaft: #333;
+  --color-sunglo: #e16973;
+}
+
+* {
+  &, &:before, &:after {
+    box-sizing: border-box;
+  }
+}
+
+html, body {
+  height: 100%;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
+}
+
+body {
+  text-align: center;
+  color: var(--color-mine-shaft);
+  background-color: var(--color-hippie-blue);
+  font-family: 'Bangers', arial;
+  line-height: 1.5;
+
+  > :nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+svg {
+  box-sizing: content-box;
+  width: 100%;
+  height: 100%;
+  transform: translateX(0);
+  vertical-align: middle;
+}
+
+.svg-inline {
+  fill: currentColor;
+
+  display: inline-flex;
+  overflow: visible;
+  width: 1em;
+  height: 1em;
+  vertical-align: -.125em;
+  font-size: 1.5em;
+  line-height: .66667em;
+}
+
+.srt {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  border: 0;
+}
+
+.btn {
+  all: unset;
+
+  padding: 1rem 2rem;
+  cursor: pointer;
+  transition: transform .25s ease-in-out, background-color .25s ease-in-out;
+  color: var(--color-gallery);
+  background-color: var(--color-mine-shaft);
+  box-shadow: 0 4px 0 -2px rgba(0, 0, 0, .25);
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-gallery);
+  }
+
+  &:hover {
+    background-color: lighten(#333, 3%);
+  }
+
+  &:active {
+    transform: scale(.95);
+  }
+
+  &--like {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 0;
+    border-radius: 50%;
+
+    > svg {
+      fill: none;
+      stroke: currentColor;
+
+      font-size: 1.5rem;
+
+      [data-variant='liked'] & {
+        fill: currentColor;
+      }
+    }
+  }
+}
+
+.wrapper {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.header {
+  position: relative;
+  overflow: hidden;
+  background-image: repeating-conic-gradient(var(--color-sunglo) 0 9deg, var(--color-gallery) 9deg 18deg);
+
+  &:before {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    display: block;
+    width: clamp(14rem, 25vw, 24rem);
+    height: 100%;
+    content: url('./chuck.svg');
+    transform: translateX(-50%);
+  }
+
+  &__title {
+    position: relative;
+    margin: 0;
+    margin-bottom: 3rem;
+    padding: 13rem 0 3rem;
+    padding-top: clamp(9rem, 14vw, 13rem);
+    font-size: clamp(2rem, 5vw, 5rem);
+  }
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+footer {
+  padding: 2rem;
+}
+
+.tabs {
+  margin: 0 -1.5rem;
+}
+
+.tabpanel {
+  padding-top: 1.5rem;
+}

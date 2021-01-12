@@ -1,0 +1,45 @@
+.loader {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, .5);
+
+  &__text {
+    position: relative;
+    margin: 0;
+    color: var(--color-gallery);
+
+    &:before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow: hidden;
+      width: 100%;
+      content: attr(data-text);
+      animation: loading 6s linear infinite;
+      white-space: nowrap;
+      color: var(--color-mine-shaft);;
+    }
+  }
+}
+
+@keyframes loading {
+  0% {
+    width: 0;
+  }
+
+  50% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0;
+  }
+}
