@@ -10,12 +10,12 @@ import './App.scss';
 const API_URL = `//api.icndb.com/jokes/random/`;
 
 function App() {
-  const [jokes, setjokes] = useState([]);
+  const [jokes, setJokes] = useState([]);
   const [likedJokes, setLikedJokes] = useLocalStorageState('Jokes', []);
   const [isTimerOn, setTimerOn] = useState(false);
   const [shouldFetchMore, setShouldFetchMore] = useState(likedJokes.length < 10);
-  const [maxJokes, setmaxJokes] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [currentTab, setCurrentTab] = useState(0);
 
   const changeTab = (ev, value) => {
@@ -29,7 +29,7 @@ function App() {
     fetch(API_URL + '10')
       .then((res) => res.json())
       .then((res) => {
-        setjokes(res.value);
+        setJokes(res.value);
 
         // putt it in a timeout to always show the loader
         setTimeout(() => {
@@ -39,42 +39,26 @@ function App() {
       .catch((err) => console.warn(`We have an error here: err ${err}`));
   };
 
-  const addJoke = (id) => {
-    if (likedJokes.find((j) => j.id === id)) return;
+  const addJoke = (joke) => {
+    if (likedJokes.find((j) => j.id === joke.id) || likedJokes.length > 9) return;
+    const newLikedJokes = [joke, ...likedJokes];
 
-    const likedJoke = jokes.find((j) => j.id === id);
-
-    setLikedJokes([likedJoke, ...likedJokes]);
+    setLikedJokes(newLikedJokes);
   }
 
-  const likeJoke = (id) => {
-    addJoke(id);
-
-    setmaxJokes(likedJokes.length > 9);
-  };
-
   useEffect(() => {
-    // Runs everytime isTimerOn OR shouldFetchMore changes
-    // and also after the first render
-    let timeout;
-    if (isTimerOn && shouldFetchMore) {
+    // Runs everytime isTimerOn OR shouldFetchMore changes OR list is not full
+    if (isTimerOn && shouldFetchMore && likedJokes.length < 10) {
       fetch(API_URL)
         .then(res => res.json())
         .then((res) => {
-          console.log(res.value.id);
-          likeJoke(res.value.id);
+          addJoke(res.value);
           setShouldFetchMore(false);
 
-          timeout = setTimeout(() => {
+          setTimeout(() => {
             setShouldFetchMore(true)
-          }, 5000)
+          }, 5000);
         })
-    }
-
-    return () => {
-      // Runs when the component is unmounted
-      // avoid running the timeout callback on unmounted component
-      clearTimeout(timeout);
     }
   }, [isTimerOn, shouldFetchMore]);
 
@@ -83,7 +67,7 @@ function App() {
   }
 
   // Remove joke from liked list
-  const unlikeJoke = (id) => {
+  const unaddJoke = (id) => {
     const newLikedJokes = likedJokes.filter((j) => j.id !== id);
 
     setLikedJokes(newLikedJokes);
@@ -103,26 +87,26 @@ function App() {
       </AppBar>
 
       <main className="wrapper">
-        {maxJokes && <h1>List is full</h1>}
-
         <div className="tabpanel" role="tabpanel" id="home-panel" hidden={currentTab !== 0}>
           <button className="btn" onClick={fetchJokes}>Give me some jokes</button>
 
           <ol className="joke-list">
             {jokes.map(joke => (
-              <Joke  key={joke.id} joke={joke} likeJoke={likeJoke} />
+              <Joke  key={joke.id} joke={joke} addJoke={addJoke} />
             ))}
           </ol>
         </div>
         <div className="tabpanel" role="tabpanel" id="likes-panel" hidden={currentTab !== 1}>
-          <label htmlFor="toggleTimer">
-            <input type="checkbox" id="toggleTimer" onClick={toggleTimer} value={!isTimerOn} />
-            Add random joke every 5 sec.
-          </label>
+          <div className="toggle-bar">
+            <label className="c-switch">
+              <input className="c-switch__input" type="checkbox" onClick={toggleTimer} value={!isTimerOn} />
+              <span className="c-switch__slider"></span>
+            </label> Add random joke every 5 sec.
+          </div>
 
           <ol className="joke-list" data-variant="liked">
             {likedJokes.map(joke => (
-              <Joke  key={joke.id} joke={joke} unlikeJoke={unlikeJoke} />
+              <Joke  key={joke.id} joke={joke} unaddJoke={unaddJoke} />
             ))}
           </ol>
         </div>
