@@ -240,3 +240,91 @@ footer {
 .tabpanel {
   padding-top: 1.5rem;
 }
+
+
+
+
+.c-switch {
+  $self: &;
+
+  position: relative;
+  display: inline-block;
+  width: 3rem;
+  height: 1.5rem;
+
+  &__slider {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    cursor: pointer;
+    border-radius: 1rem;
+    background-color: #aaa;
+
+    &, &:before, &:after {
+      position: absolute;
+      transition: .15s ease-in-out;
+    }
+
+    &:before {
+      top: 0;
+      left: 0;
+      width: 1.5rem;
+      height: 1.5rem;
+      content: '';
+      border: 1px solid var(--color-sunglo);
+      border-radius: .75rem;
+      background-color: var(--color-gallery);
+      box-shadow: 0 4px 0 -2px rgba(0, 0, 0, .25);
+    }
+  }
+
+  &__input {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+
+    &:focus-visible +  {
+      #{$self}__slider {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--color-gallery);
+      }
+    }
+
+    &:checked +  {
+      #{$self}__slider {
+        background-color: var(--color-sunglo);
+
+        &:before {
+          left: 100%;
+          transform: translateX(-100%);
+        }
+
+        &:after {
+          opacity: 1;
+        }
+      }
+    }
+
+    &:active +  {
+      #{$self}__slider {
+        &:before {
+          width: rem(30px);
+        }
+      }
+    }
+  }
+}
+
+
+.toggle-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+
+  > .c-switch {
+    margin-right: 1rem;
+  }
+}
