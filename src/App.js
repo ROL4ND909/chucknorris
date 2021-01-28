@@ -4,7 +4,7 @@ import useLocalStorageState from "use-local-storage-state";
 // I choose for Material UI for the ease of use for the tabpanels
 import { Badge, AppBar, Tab, Tabs } from '@material-ui/core';
 
-import Joke from './components/Joke/';
+import Joke from './components/Joke';
 import Loader from './components/Loader';
 import './App.scss';
 
@@ -64,6 +64,8 @@ function App() {
           }, 5000);
         })
     }
+
+    // eslint-disable-next-line
   }, [isTimerOn, shouldFetchMore]);
 
   // Toggle the timer state
